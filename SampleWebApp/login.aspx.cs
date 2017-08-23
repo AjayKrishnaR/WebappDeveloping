@@ -33,13 +33,13 @@ namespace SampleWebApp
             // }
             //// Response.Redirect("Welcome.aspx");
 
-            int v = Convert.ToInt32(cobj.scalar("select count(*) from tbl_login where uname='" + TextBox1.Text + "'"));
+            int v = Convert.ToInt32(cobj.scalar("select count(*) from tbl_login where Username='" + TextBox1.Text + "'"));
             if (v == 1)
             {
-                string uname = cobj.scalar("select uname from tbl_login where uname='" + TextBox1.Text + "'");
+                string uname = cobj.scalar("select Username from tbl_login where Username='" + TextBox1.Text + "'");
                 if (uname == TextBox1.Text)
                 {
-                    string chk_paswd = cobj.scalar("select pwd from tbl_login where uname='" + TextBox1.Text + "'");
+                    string chk_paswd = cobj.scalar("select Password from tbl_login where Username='" + TextBox1.Text + "'");
                     string paswd = TextBox2.Text;
                     string ns = FormsAuthentication.HashPasswordForStoringInConfigFile("paswd", "SHA1");
                     if (ns == chk_paswd)

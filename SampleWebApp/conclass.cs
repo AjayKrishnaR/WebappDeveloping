@@ -35,8 +35,7 @@ namespace SampleWebApp
         //------------------------------single value retrieval-------------//
         public string scalar(string s)
         {
-
-
+            
             openconnection();
             cmd.CommandText = s;
             string a = cmd.ExecuteScalar().ToString();
