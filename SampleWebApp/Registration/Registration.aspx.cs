@@ -20,9 +20,9 @@ namespace SampleWebApp
         protected void Button1_Click(object sender, EventArgs e)
         {
             string paswd = TextBox3.Text;
-            string ns = FormsAuthentication.HashPasswordForStoringInConfigFile("paswd", "SHA1");
+           // string ns = FormsAuthentication.HashPasswordForStoringInConfigFile("paswd", "SHA1");
             SqlConnection con = new SqlConnection("Data Source=SUYPC204;Initial Catalog=WebApp1;User ID=SA;Password=Suyati123");
-            SqlCommand cmd = new SqlCommand("insert into tbl_login(Username,Password,Email) values('" + TextBox1.Text + "','" + ns + "','" + TextBox4.Text + "')", con);
+            SqlCommand cmd = new SqlCommand("insert into tbl_login(Username,Password,Email) values('" + TextBox1.Text + "','" + paswd + "','" + TextBox4.Text + "')", con);
             cmd.CommandType = CommandType.Text;
             con.Open();
             cmd.ExecuteNonQuery();
