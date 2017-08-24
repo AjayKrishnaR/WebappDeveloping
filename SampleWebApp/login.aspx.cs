@@ -37,14 +37,14 @@ namespace SampleWebApp
             int v = Convert.ToInt32(cobj.scalar("select count(*) from tbl_login where Username='" + TextBox1.Text + "'"));
             if (v == 1)
             {
-                String check = Convert.ToString(cobj.scalar("select IsLocked from tbl_login where Username='" + TextBox1.Text + "'"));
-                if (check != "")
+                int check = Convert.ToInt32(cobj.scalar("select IsLocked from tbl_login where Username='" + TextBox1.Text + "'"));
+                if (check == 1)
                 {
-                    int checki = Convert.ToInt32(check);
-                    if (checki == 1)
-                    {
+                   //int checki = Convert.ToInt32(check);
+                    //if (checki == 1)
+                    //{
                         Label1.Text = "You Are Still Locked Contact Admin !!!";
-                    }
+                    //}
                 }
                 string uname = cobj.scalar("select Username from tbl_login where Username='" + TextBox1.Text + "'");
                 if (uname == TextBox1.Text)
@@ -60,32 +60,30 @@ namespace SampleWebApp
                     else
                     {
                         //Add code to check try count and lock the user
-                        string tries = cobj.scalar("select RetryAttempts from tbl_login where Username='" + TextBox1.Text + "'");
-                        if (tries == "")
-                        {
-                           count = 1;
-                        }
-                        else
-                        {
+                        int tries = Convert.ToInt32(cobj.scalar("select RetryAttempts from tbl_login where Username='" + TextBox1.Text + "'"));
+                       
                             count = Convert.ToInt32(tries);
                             if (count == 5)
                             {
-                                DateTime today = DateTime.Today;
+                            int locked = 1;
+                                DateTime today = DateTime.Now;
                                 string Time = today.ToString("dd/MM/yyyy");
-                                cobj.nonquery("insert into tbl_login(LockDateTime) values('" + Time + "') where Username='" + TextBox1.Text + "'");
-                                cobj.nonquery("insert into tbl_login(IsLocked) values(1) where Username='" + TextBox1.Text + "'");
-                                Label1.Text = "You Tried Many Times Account Locked.. Contact Admin";
+                            cobj.nonquery("update tbl_login SET LockDateTime = ('" + Time + "')where Username='" + TextBox1.Text + "'");
+                           // cobj.nonquery("insert into tbl_login(LockDateTime) values('" + Time + "') where Username='" + TextBox1.Text + "'");
+                            //  cobj.nonquery("insert into tbl_login(IsLocked) values(1) where Username='" + TextBox1.Text + "'");
+                            cobj.nonquery("update tbl_login SET IsLocked = ('" + locked + "')where Username='" + TextBox1.Text + "'");
+                            Label1.Text = "You Tried Many Times Account Locked.. Contact Admin";
                             }
                             else
                             {
                                 int max_count = 5;
                                 count = count + 1;
-                                cobj.nonquery("insert into tbl_login(RetryAttempts) values('" + count + "')where Username='" + TextBox1.Text + "'");
+                                cobj.nonquery("update tbl_login SET RetryAttempts = ('" + count + "')where Username='" + TextBox1.Text + "'");
                                 int tried = max_count - count;
                                 Label1.Text = "Incorrect password " + tried + "tries left";
                             }
 
-                        }
+                        
 
                     }
                 }
