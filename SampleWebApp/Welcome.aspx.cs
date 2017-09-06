@@ -13,5 +13,15 @@ namespace SampleWebApp
         {
 
         }
+
+        protected void LinkButton2_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("login.aspx");
+        }
+
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("ChangePswd.aspx");
+        }
     }
 }

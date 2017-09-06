@@ -33,6 +33,7 @@ namespace SampleWebApp
             //    Label1.Text = "Invalid User name or Password";
             //}
             // Response.Redirect("Welcome.aspx");
+            Session["usr"] = TextBox1.Text;
 
             int v = Convert.ToInt32(cobj.scalar("select count(*) from tbl_login where Username='" + TextBox1.Text + "'"));
             if (v == 1)
@@ -54,8 +55,16 @@ namespace SampleWebApp
                     // string ns = FormsAuthentication.HashPasswordForStoringInConfigFile("paswd", "SHA1");
                     if (paswd == chk_paswd)
                     {
-                        //Session["usr"] = TextBox1.Text;                 
-                        Server.Transfer("Welcome.aspx");
+                        if (TextBox1.Text == "admin")
+                        {
+                            Response.Redirect("AdminHome.aspx");
+                        }
+                        else
+                        {
+                            Session["usr"] = TextBox1.Text;                 
+                            //Response.Redirect("Welcome.aspx");
+                            FormsAuthentication.RedirectFromLoginPage(TextBox1.Text, true);
+                        }
                     }
                     else
                     {

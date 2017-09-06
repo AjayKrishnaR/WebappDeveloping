@@ -1,4 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Registration.aspx.cs" Inherits="SampleWebApp.Registration" %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.Data" %>
+
 
 
 <!DOCTYPE html>
@@ -49,6 +52,9 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="scriptmanager1" runat="server">
+</asp:ScriptManager>
+
     <div>
     <h1 style="text-align: center">REGISTER HERE</h1>
         <br />
@@ -66,7 +72,7 @@
                 <td class="auto-style3">&nbsp;</td>
                 <td class="auto-style2">User Name:</td>
                 <td class="auto-style4">
-                    <asp:TextBox ID="TextBox1" runat="server" Width="217px" ToolTip="Enter Username"></asp:TextBox>
+                    <asp:TextBox ID="TextBox1" runat="server" Width="217px" ToolTip="Enter Username" OnTextChanged="TextBox1_TextChanged"></asp:TextBox>
                 </td>
                 <td class="auto-style9">
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="This is a Required Field" ForeColor="Red" ValidationGroup="a"></asp:RequiredFieldValidator>
@@ -120,5 +126,37 @@
     
     </div>
     </form>
+
+    <script runat="server">
+
+        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(TextBox1.Text))
+            {
+                // SqlConnection con = new SqlConnection("Data Source=SureshDasari;Integrated Security=true;Initial Catalog=MySampleDB");
+                SqlConnection con = new SqlConnection("Data Source=SUYPC204;Initial Catalog=WebApp1;User ID=SA;Password=Suyati123");
+                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from tbl_login where UserName=@Name", con);
+                cmd.Parameters.AddWithValue("@Name", TextBox1.Text);
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                   
+                  
+                    Label1.Text = "UserName Already Taken";
+                }
+                else
+                {
+                    
+                    Label1.Text = "UserName Available";
+                }
+            }
+            else
+            {
+                
+            }
+        }
+
+        </script>
 </body>
 </html>
